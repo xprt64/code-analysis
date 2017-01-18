@@ -1,0 +1,21 @@
+{
+  "name": "xprt64/code-analysis",
+  "description": "code analysis for PHP",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Constantin GALBENU",
+      "email": "gica.galbenu@gmail.com"
+    }
+  ],
+
+  "require": {
+    "php": "^7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Gica\\CodeAnalysis\\": "src/Gica/CodeAnalysis/"
+    }
+  }
+}
