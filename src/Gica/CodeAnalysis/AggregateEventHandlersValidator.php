@@ -115,7 +115,6 @@ class AggregateEventHandlersValidator
                     throw new \Exception("Method's name is invalid: {$reflectionMethod->getName()} for event $eventClass in\n" .
                         "{$reflectionClass->getFileName()}:{$reflectionMethod->getStartLine()}\n" .
                         "should be $validMethodName");
-                } else {
                 }
             }
         }
