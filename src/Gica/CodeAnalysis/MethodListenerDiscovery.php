@@ -179,7 +179,7 @@ class MethodListenerDiscovery
 
             if ($typeHintedClass) {
                 if ($this->isOurMessageClass($typeHintedClass)) {
-                    return $typeHintedClass->getName();
+                    return $typeHintedClass->name;
                 }
             }
         }

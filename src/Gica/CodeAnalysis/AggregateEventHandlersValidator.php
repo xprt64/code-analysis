@@ -109,7 +109,7 @@ class AggregateEventHandlersValidator
         $typeHintedClass = $reflectionParameter->getClass();
 
         if ($typeHintedClass) {
-            return $typeHintedClass->getName();
+            return $typeHintedClass->name;
         }
 
         throw new \Exception("Method parameter is not type hinted");

@@ -22,7 +22,7 @@ class ListenerMethod
         $class, $methodName, $eventClassName
     )
     {
-        $this->className = $class->getName();
+        $this->className = $class->name;
         $this->methodName = $methodName;
         $this->eventClassName = $eventClassName;
         $this->class = $class;
@@ -33,7 +33,7 @@ class ListenerMethod
      */
     public function getClassName()
     {
-        return $this->class->getName();
+        return $this->class->name;
     }
 
     /**

@@ -21,7 +21,7 @@ class ByConstructorDependencySorter implements ClassSorter
             return -1;
         }
 
-        return strcmp($a->getName(), $b->getName());
+        return strcmp($a->name, $b->name);
     }
 
     private function classDependsOnClass(\ReflectionClass $consumerClass, \ReflectionClass $consumedClass)
@@ -29,10 +29,10 @@ class ByConstructorDependencySorter implements ClassSorter
         $dependencies = $this->getClassDependencies($consumerClass);
 
         if ($this->searchClass($consumedClass, $dependencies)) {
-            //echo "{$consumerClass->getName()} depends on {$consumedClass->getName()}\n";
+            //echo "{$consumerClass->name} depends on {$consumedClass->name}\n";
             return true;
         } else {
-            //echo "{$a->getName()} does not depend on {$b->getName()}\n";
+            //echo "{$a->name} does not depend on {$b->name}\n";
             return false;
         }
     }
@@ -55,7 +55,7 @@ class ByConstructorDependencySorter implements ClassSorter
     private function searchClass(\ReflectionClass $a, $classes)
     {
         foreach ($classes as $class) {
-            if (is_subclass_of($class, $a->getName()) || $a->getName() == $class) {
+            if (is_subclass_of($class, $a->name) || $a->name == $class) {
                 return true;
             }
         }
@@ -65,7 +65,7 @@ class ByConstructorDependencySorter implements ClassSorter
 
     private function classNameFromParameter(\ReflectionParameter $parameter)
     {
-        return $parameter->getClass()->getName();
+        return $parameter->getClass()->name;
     }
 
     /**

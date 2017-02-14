@@ -16,7 +16,7 @@ class PhpConstantsToJavaScriptExporter
         $objectConstants = $class->getConstants();
 
 
-        $flagsClass = $class->getName();
+        $flagsClass = $class->name;
 
         $constantsDirectives = [];
         $flagsProperties = [];
