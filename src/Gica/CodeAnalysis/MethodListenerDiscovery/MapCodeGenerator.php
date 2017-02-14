@@ -1,7 +1,7 @@
 <?php
 
 
-namespace CodeAnalysis\MethodListenerDiscovery;
+namespace Gica\CodeAnalysis\MethodListenerDiscovery;
 
 
 interface MapCodeGenerator
