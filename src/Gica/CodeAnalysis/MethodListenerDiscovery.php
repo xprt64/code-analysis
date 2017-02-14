@@ -92,16 +92,11 @@ class MethodListenerDiscovery
     {
         $fqn = $this->phpClassInFileInspector->getFullyQualifiedClassName($fullFilePath);
 
-        if (null !== $fqn) {
+        if (null === $fqn) {
             return false;
         }
 
         return $this->findListenerMethodsInClass($fqn);
-    }
-
-    protected function readFile($fullFilePath)
-    {
-        return file_get_contents($fullFilePath);
     }
 
     protected function addListenerToEvents(ListenerMethod $listener)

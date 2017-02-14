@@ -75,16 +75,11 @@ class ClassDiscovery
     {
         $fqn = $this->phpClassInFileInspector->getFullyQualifiedClassName($fullFilePath);
 
-        if (null !== $fqn) {
+        if (null === $fqn) {
             return false;
         }
 
         return $this->getClassIfAccepted($fqn);
-    }
-
-    protected function readFile($fullFilePath)
-    {
-        return file_get_contents($fullFilePath);
     }
 
     /**

@@ -64,11 +64,6 @@ class AggregateEventHandlersValidator
         }
     }
 
-    protected function readFile($fullFilePath)
-    {
-        return file_get_contents($fullFilePath);
-    }
-
     protected function filterFiles(array $files)
     {
         return array_filter($files, [$this, 'isListenerFileName']);
