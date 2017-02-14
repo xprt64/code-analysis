@@ -27,6 +27,12 @@
     <!--highLowerBound="70"/>-->
     <!--</logging>-->
 
+    <logging>
+        <!-- and this is where your report will be written -->
+        <log type="coverage-clover" target="build/cov/clover.xml"/>
+        <log type="coverage-php" target="build/cov/coverage.cov"/>
+    </logging>
+
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">../src/Gica</directory>

@@ -4,6 +4,12 @@ php:
   - '7.1'
 
 install:
-  - composer install
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar install --dev --no-interaction
 
-script: phpunit --configuration tests/phpunit.xml tests/
+script:
+  - mkdir -p build/logs
+  - phpunit --configuration tests/phpunit.xml tests/
+
+after_success:
+  - travis_retry php vendor/bin/coveralls -v
