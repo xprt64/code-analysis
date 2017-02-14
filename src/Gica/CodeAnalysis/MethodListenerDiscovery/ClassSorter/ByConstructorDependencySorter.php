@@ -54,13 +54,14 @@ class ByConstructorDependencySorter implements ClassSorter
 
     private function isParentClassOfAny(\ReflectionClass $parentClass, $classes)
     {
-        foreach ($classes as $class) {
-            if ($parentClass->name === $class || is_subclass_of($class, $parentClass->name, true)) {
-                return true;
-            }
-        }
+        $isSubClassOf = function ($class) use ($parentClass) {
+            return $parentClass->name === $class || is_subclass_of($class, $parentClass->name, true);
+        };
 
-        return false;
+        $filtered = array_filter($classes, $isSubClassOf);
+
+        return count($filtered) > 0;
+
     }
 
     private function classNameFromParameter(\ReflectionParameter $parameter)
