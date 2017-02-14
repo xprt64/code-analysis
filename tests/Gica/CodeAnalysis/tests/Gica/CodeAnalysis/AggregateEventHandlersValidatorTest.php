@@ -5,6 +5,7 @@ namespace tests\Gica\CodeAnalysis;
 
 
 use Gica\CodeAnalysis\AggregateEventHandlersValidator;
+use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator\AnyPhpClassIsAccepted;
 
 
@@ -55,7 +56,7 @@ class AggregateEventHandlersValidatorTest extends \PHPUnit_Framework_TestCase
 }
 
 
-class OnlyAggregate implements \Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator
+class OnlyAggregate implements ListenerClassValidator
 {
 
     public function isClassAccepted(\ReflectionClass $typeHintedClass): bool
