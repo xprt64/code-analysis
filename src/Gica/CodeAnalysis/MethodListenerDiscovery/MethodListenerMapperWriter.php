@@ -43,9 +43,7 @@ class MethodListenerMapperWriter
 
     private function prependSlash($className)
     {
-        if ($className[0] != '\\')
-            return '\\' . $className;
-        return $className;
+        return $className[0] != '\\' ? '\\' . $className : $className;
     }
 
     /**
@@ -63,7 +61,7 @@ class MethodListenerMapperWriter
     {
         return $this->spaces(self::SPACES_AT_MESSAGES) . $this->prependSlash($eventClass) . "::class => [\n" .
             implode("\n", $this->addClassToListeners($listeners)) . "\n" .
-        $this->spaces(self::SPACES_AT_MESSAGES) . "],";
+            $this->spaces(self::SPACES_AT_MESSAGES) . "],";
     }
 
 }

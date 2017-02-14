@@ -7,20 +7,14 @@ namespace Gica\CodeAnalysis;
 
 
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator;
-use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
 use Gica\CodeAnalysis\Traits\FilesInDirectoryExtracter;
 
 class AggregateEventHandlersValidator
 {
     use FilesInDirectoryExtracter;
 
-    protected $eventToListenerMap = [];
-
     /** @var ListenerClassValidator */
     private $classValidator;
-
-    /** @var ListenerMethod[] */
-    private $allEventsListeners = [];
 
     public function __construct(
         ListenerClassValidator $classValidator
@@ -86,25 +80,6 @@ class AggregateEventHandlersValidator
     protected function readFile($fullFilePath)
     {
         return file_get_contents($fullFilePath);
-    }
-
-    protected function addListenerToEvents(ListenerMethod $listener)
-    {
-        $this->eventToListenerMap[$listener->getEventClassName()][] = $listener;
-        $this->allEventsListeners[] = $listener;
-    }
-
-    public function getEventToListenerMap()
-    {
-        return $this->eventToListenerMap;
-    }
-
-    /**
-     * @return ListenerMethod[]
-     */
-    public function getAllEventsListeners(): array
-    {
-        return $this->allEventsListeners;
     }
 
     protected function filterFiles(array $files)

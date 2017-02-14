@@ -43,9 +43,7 @@ class ReadModelMapperWriter
 
     private function prependSlash($className)
     {
-        if ($className[0] != '\\')
-            return '\\' . $className;
-        return $className;
+        return $className[0] != '\\' ? '\\' . $className : $className;
     }
 
     /**
@@ -62,8 +60,8 @@ class ReadModelMapperWriter
     private function generateReadItem($listenerClass, array $listeners)
     {
         return $this->spaces(self::SPACES_AT_MESSAGES) . $this->prependSlash($listenerClass) . "::class => [\n" .
-        implode("\n", $this->addClassToEvents($listeners)) . "\n" .
-        $this->spaces(self::SPACES_AT_MESSAGES) . "],";
+            implode("\n", $this->addClassToEvents($listeners)) . "\n" .
+            $this->spaces(self::SPACES_AT_MESSAGES) . "],";
     }
 
     /**
