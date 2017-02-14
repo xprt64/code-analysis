@@ -6,7 +6,9 @@
 namespace Gica\CodeAnalysis\MethodListenerDiscovery;
 
 
-class MethodListenerMapperWriter
+use CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator;
+
+class MethodListenerMapperWriter implements MapCodeGenerator
 {
     const SPACES_AT_ROOT = 8;
     const SPACES_AT_MESSAGES = 12;
