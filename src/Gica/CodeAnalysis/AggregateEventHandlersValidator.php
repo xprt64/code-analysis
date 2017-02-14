@@ -59,7 +59,7 @@ class AggregateEventHandlersValidator
     {
         $fqn = $this->phpClassInFileInspector->getFullyQualifiedClassName($fullFilePath);
 
-        if ($fqn) {
+        if ($fqn !== null) {
             $this->validateEventHandlersInClass($fqn);
         }
     }

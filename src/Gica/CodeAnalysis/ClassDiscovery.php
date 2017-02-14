@@ -75,7 +75,7 @@ class ClassDiscovery
     {
         $fqn = $this->phpClassInFileInspector->getFullyQualifiedClassName($fullFilePath);
 
-        if (!$fqn) {
+        if (null !== $fqn) {
             return false;
         }
 
