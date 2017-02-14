@@ -50,7 +50,7 @@ class MethodListenerDiscovery
     }
 
 
-    public function discover($directory)
+    public function discoverListeners($directory)
     {
         $files = $this->getFilesInDirectory($directory);
 
