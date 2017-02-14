@@ -13,22 +13,22 @@ class ByConstructorDependencySorter implements ClassSorter
 
     public function __invoke(\ReflectionClass $a, \ReflectionClass $b)
     {
-        if ($this->classDependsOnClass($a, $b)) {
+        if ($this->doesClassDependsOnClass($a, $b)) {
             return 1;
         }
 
-        if ($this->classDependsOnClass($b, $a)) {
+        if ($this->doesClassDependsOnClass($b, $a)) {
             return -1;
         }
 
         return strcmp($a->name, $b->name);
     }
 
-    private function classDependsOnClass(\ReflectionClass $consumerClass, \ReflectionClass $consumedClass)
+    private function doesClassDependsOnClass(\ReflectionClass $consumerClass, \ReflectionClass $consumedClass)
     {
         $dependencies = $this->getClassDependencies($consumerClass);
 
-        if ($this->searchClass($consumedClass, $dependencies)) {
+        if ($this->isParentClassOfAny($consumedClass, $dependencies)) {
             //echo "{$consumerClass->name} depends on {$consumedClass->name}\n";
             return true;
         } else {
@@ -52,24 +52,11 @@ class ByConstructorDependencySorter implements ClassSorter
     }
 
 
-    private function searchClass(\ReflectionClass $parentClass, $classes)
+    private function isParentClassOfAny(\ReflectionClass $parentClass, $classes)
     {
         foreach ($classes as $class) {
-
-            if ($parentClass->name == $class) {
+            if ($parentClass->name === $class || is_subclass_of($class, $parentClass->name, true)) {
                 return true;
-            }
-
-            $reflectionClass = new \ReflectionClass($class);
-
-            if ($parentClass->isInterface()) {
-                if ($reflectionClass->implementsInterface($parentClass->name)) {
-                    return true;
-                }
-            } else {
-                if ($reflectionClass->isSubclassOf($parentClass->name)) {
-                    return true;
-                }
             }
         }
 
