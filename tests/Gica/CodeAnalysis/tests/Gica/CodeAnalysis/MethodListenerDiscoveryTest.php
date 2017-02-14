@@ -26,7 +26,7 @@ class MethodListenerDiscoveryTest extends \PHPUnit_Framework_TestCase
             new AlphabeticalClassSorter()
         );
 
-        $sut->discoverListeners(__DIR__ . '/MethodListenerDiscoveryData');
+        $sut->discover(__DIR__ . '/MethodListenerDiscoveryData');
 
 
         $map = $sut->getEventToListenerMap();

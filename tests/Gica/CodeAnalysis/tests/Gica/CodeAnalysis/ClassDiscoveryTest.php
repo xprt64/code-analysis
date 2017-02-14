@@ -19,7 +19,7 @@ class ClassDiscoveryTest extends \PHPUnit_Framework_TestCase
             new AlphabeticalClassSorter()
         );
 
-        $sut->discoverListeners(__DIR__ . '/ClassDiscovery');
+        $sut->discover(__DIR__ . '/ClassDiscovery');
 
         $this->assertCount(3, $sut->getDiscoveredClasses());
     }
