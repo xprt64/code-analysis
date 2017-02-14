@@ -52,11 +52,24 @@ class ByConstructorDependencySorter implements ClassSorter
     }
 
 
-    private function searchClass(\ReflectionClass $a, $classes)
+    private function searchClass(\ReflectionClass $parentClass, $classes)
     {
         foreach ($classes as $class) {
-            if (is_subclass_of($class, $a->name) || $a->name == $class) {
+
+            if ($parentClass->name == $class) {
                 return true;
+            }
+
+            $reflectionClass = new \ReflectionClass($class);
+
+            if ($parentClass->isInterface()) {
+                if ($reflectionClass->implementsInterface($parentClass->name)) {
+                    return true;
+                }
+            } else {
+                if ($reflectionClass->isSubclassOf($parentClass->name)) {
+                    return true;
+                }
             }
         }
 
