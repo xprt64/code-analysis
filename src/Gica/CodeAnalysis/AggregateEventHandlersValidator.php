@@ -15,12 +15,18 @@ class AggregateEventHandlersValidator
 
     /** @var ListenerClassValidator */
     private $classValidator;
+    /**
+     * @var PhpClassInFileInspector
+     */
+    private $phpClassInFileInspector;
 
     public function __construct(
-        ListenerClassValidator $classValidator
+        ListenerClassValidator $classValidator,
+        PhpClassInFileInspector $phpClassInFileInspector = null
     )
     {
         $this->classValidator = $classValidator;
+        $this->phpClassInFileInspector = $phpClassInFileInspector ?? new PhpClassInFileInspector;
     }
 
 
@@ -51,30 +57,11 @@ class AggregateEventHandlersValidator
      */
     protected function validateFile($fullFilePath)
     {
-        $content = $this->readFile($fullFilePath);
+        $fqn = $this->phpClassInFileInspector->getFullyQualifiedClassName($fullFilePath);
 
-        if (!preg_match('#class\s+(?P<className>\S+)\s#ims', $content, $m)) {
-            return;
+        if ($fqn) {
+            $this->validateEventHandlersInClass($fqn);
         }
-
-        $unqualifiedClassName = $m['className'];
-
-        if (!preg_match('#namespace\s+(?P<namespace>\S+);#ims', $content, $m)) {
-            return;
-        }
-
-        $namespace = $m['namespace'];
-        if ($namespace)
-            $namespace = '\\' . $namespace;
-
-
-        $fqn = $namespace . '\\' . $unqualifiedClassName;
-
-        if (!class_exists($fqn)) {
-            $this->evaluateCode($content);
-        }
-
-        $this->validateEventHandlersInClass($fqn);
     }
 
     protected function readFile($fullFilePath)
@@ -112,7 +99,7 @@ class AggregateEventHandlersValidator
                 $validMethodName = $this->getMethodNameFromEventClass($eventClass);
 
                 if ($reflectionMethod->getName() != $validMethodName) {
-                    throw new \Exception("Method's name is invalid: {$reflectionMethod->getName()} for event $eventClass in\n" .
+                    throw new \Exception("Method's name is invalid: {$reflectionMethod->name} for event $eventClass in\n" .
                         "{$reflectionClass->getFileName()}:{$reflectionMethod->getStartLine()}\n" .
                         "should be $validMethodName");
                 }
@@ -140,12 +127,6 @@ class AggregateEventHandlersValidator
         }
 
         return 0 === stripos($reflectionMethod->getName(), 'apply');
-    }
-
-    private function evaluateCode($content)
-    {
-        $content = str_replace('<?php', '', $content);
-        eval($content);
     }
 
     private function getMethodNameFromEventClass($className)

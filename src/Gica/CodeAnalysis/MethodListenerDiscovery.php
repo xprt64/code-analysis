@@ -31,16 +31,22 @@ class MethodListenerDiscovery
      * @var ClassSorter
      */
     private $classSorter;
+    /**
+     * @var PhpClassInFileInspector
+     */
+    private $phpClassInFileInspector;
 
     public function __construct(
         MessageClassDetector $messageClassDetector,
         ListenerClassValidator $classValidator,
-        ClassSorter $classSorter
+        ClassSorter $classSorter,
+        PhpClassInFileInspector $phpClassInFileInspector = null
     )
     {
         $this->messageClassDetector = $messageClassDetector;
         $this->classValidator = $classValidator;
         $this->classSorter = $classSorter;
+        $this->phpClassInFileInspector = $phpClassInFileInspector ?? new PhpClassInFileInspector();
     }
 
 
@@ -84,27 +90,10 @@ class MethodListenerDiscovery
      */
     protected function extractListenerMethodsFromFile($fullFilePath)
     {
-        $content = $this->readFile($fullFilePath);
+        $fqn = $this->phpClassInFileInspector->getFullyQualifiedClassName($fullFilePath);
 
-        if (!preg_match('#class\s+(?P<className>\S+)\s#ims', $content, $m)) {
+        if (!$fqn) {
             return false;
-        }
-
-        $unqualifiedClassName = $m['className'];
-
-        if (!preg_match('#namespace\s+(?P<namespace>\S+);#ims', $content, $m)) {
-            return false;
-        }
-
-        $namespace = $m['namespace'];
-        if ($namespace)
-            $namespace = '\\' . $namespace;
-
-
-        $fqn = $namespace . '\\' . $unqualifiedClassName;
-
-        if (!class_exists($fqn)) {
-            $this->evaluateCode($content);
         }
 
         return $this->findListenerMethodsInClass($fqn);
@@ -149,7 +138,9 @@ class MethodListenerDiscovery
 
     protected function filterFiles(array $files)
     {
-        return array_filter($files, [$this, 'isListenerFileName']);
+        return array_filter($files, function ($file) {
+            return $this->isListenerFileName($file);
+        });
     }
 
     /**
@@ -212,12 +203,6 @@ class MethodListenerDiscovery
     private function isOurMessageClass(\ReflectionClass $typeHintedClass)
     {
         return $this->messageClassDetector->isMessageClass($typeHintedClass);
-    }
-
-    private function evaluateCode($content)
-    {
-        $content = str_replace('<?php', '', $content);
-        eval($content);
     }
 
     private function isMethodAcccepted(\ReflectionMethod $reflectionMethod)

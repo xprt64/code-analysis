@@ -22,14 +22,20 @@ class ClassDiscovery
      * @var ClassSorter
      */
     private $classSorter;
+    /**
+     * @var PhpClassInFileInspector
+     */
+    private $phpClassInFileInspector;
 
     public function __construct(
         ListenerClassValidator $classValidator,
-        ClassSorter $classSorter
+        ClassSorter $classSorter,
+        PhpClassInFileInspector $phpClassInFileInspector = null
     )
     {
         $this->classValidator = $classValidator;
         $this->classSorter = $classSorter;
+        $this->phpClassInFileInspector = $phpClassInFileInspector ?? new PhpClassInFileInspector;
     }
 
 
@@ -67,27 +73,10 @@ class ClassDiscovery
      */
     protected function extractClassFromFileIfAccepted($fullFilePath)
     {
-        $content = $this->readFile($fullFilePath);
+        $fqn = $this->phpClassInFileInspector->getFullyQualifiedClassName($fullFilePath);
 
-        if (!preg_match('#class\s+(?P<className>\S+)\s#ims', $content, $m)) {
+        if (!$fqn) {
             return false;
-        }
-
-        $unqualifiedClassName = $m['className'];
-
-        if (!preg_match('#namespace\s+(?P<namespace>\S+);#ims', $content, $m)) {
-            return false;
-        }
-
-        $namespace = $m['namespace'];
-        if ($namespace)
-            $namespace = '\\' . $namespace;
-
-
-        $fqn = $namespace . '\\' . $unqualifiedClassName;
-
-        if (!class_exists($fqn)) {
-            $this->evaluateCode($content);
         }
 
         return $this->getClassIfAccepted($fqn);
@@ -126,12 +115,6 @@ class ClassDiscovery
         }
 
         return null;
-    }
-
-    private function evaluateCode($content)
-    {
-        $content = str_replace('<?php', '', $content);
-        eval($content);
     }
 
     /**
