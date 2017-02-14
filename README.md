@@ -2,3 +2,6 @@
 [![Build Status](https://travis-ci.org/xprt64/code-analysis.svg?branch=master)](https://travis-ci.org/xprt64/code-analysis)
 [![Coverage Status](https://coveralls.io/repos/github/xprt64/code-analysis/badge.svg?branch=master)](https://coveralls.io/github/xprt64/code-analysis?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/58a2dc26940b230031fbaf15/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58a2dc26940b230031fbaf15)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/xprt64/code-analysis/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/xprt64/code-analysis/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/xprt64/code-analysis/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/xprt64/code-analysis/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/xprt64/code-analysis/badges/build.png?b=master)](https://scrutinizer-ci.com/g/xprt64/code-analysis/build-status/master)
