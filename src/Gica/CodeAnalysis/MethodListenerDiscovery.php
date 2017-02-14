@@ -166,7 +166,7 @@ class MethodListenerDiscovery
             $eventClass = $this->getMessageClassFromMethod($reflectionMethod);
 
             if ($eventClass) {
-                $result[] = new ListenerMethod($reflectionClass, $reflectionMethod->getName(), $eventClass);
+                $result[] = new ListenerMethod($reflectionClass, $reflectionMethod->name, $eventClass);
             }
         }
 

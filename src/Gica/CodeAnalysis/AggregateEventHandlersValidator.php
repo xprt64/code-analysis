@@ -98,7 +98,7 @@ class AggregateEventHandlersValidator
 
                 $validMethodName = $this->getMethodNameFromEventClass($eventClass);
 
-                if ($reflectionMethod->getName() != $validMethodName) {
+                if ($reflectionMethod->name != $validMethodName) {
                     throw new \Exception("Method's name is invalid: {$reflectionMethod->name} for event $eventClass in\n" .
                         "{$reflectionClass->getFileName()}:{$reflectionMethod->getStartLine()}\n" .
                         "should be $validMethodName");
@@ -126,7 +126,7 @@ class AggregateEventHandlersValidator
             return false;
         }
 
-        return 0 === stripos($reflectionMethod->getName(), 'apply');
+        return 0 === stripos($reflectionMethod->name, 'apply');
     }
 
     private function getMethodNameFromEventClass($className)
