@@ -52,7 +52,6 @@ class ByConstructorDependencySorter implements ClassSorter
         $comparator = new SubclassComparator();
 
         $isASubClassOrSameClass = function ($class) use ($parentClass, $comparator) {
-
             return $comparator->isASubClassOrSameClass($class, $parentClass->name);
         };
 
