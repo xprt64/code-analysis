@@ -1,7 +1,7 @@
 <?php
-namespace tests\Gica\CodeAnalysis\tests\Gica\CodeAnalysis\Shared;
+namespace Gica\CodeAnalysis\Shared\ClassSorter;
 
-use Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter;
+use Gica\CodeAnalysis\Shared\ClassSorter;
 
 class AlphabeticalClassSorter implements ClassSorter
 {

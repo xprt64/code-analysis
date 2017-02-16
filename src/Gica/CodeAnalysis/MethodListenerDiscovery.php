@@ -6,17 +6,16 @@
 namespace Gica\CodeAnalysis;
 
 
-use Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
 use Gica\CodeAnalysis\MethodListenerDiscovery\MessageClassDetector;
+use Gica\CodeAnalysis\Shared\ClassSorter;
 use Gica\CodeAnalysis\Traits\FilesInDirectoryExtracter;
 
 class MethodListenerDiscovery
 {
     use FilesInDirectoryExtracter;
 
-    protected $eventToListenerMap = [];
     /**
      * @var MessageClassDetector
      */
@@ -70,10 +69,6 @@ class MethodListenerDiscovery
 
         $this->allEventsListeners = $this->sortListeners($this->allEventsListeners);
 
-        foreach ($this->eventToListenerMap as $eventClass => $listeners) {
-            $this->eventToListenerMap[$eventClass] = $this->sortListeners($listeners);
-        }
-
         return $this->allEventsListeners;
     }
 
@@ -103,7 +98,6 @@ class MethodListenerDiscovery
 
     protected function addListenerToEvents(ListenerMethod $listener)
     {
-        $this->eventToListenerMap[$listener->getEventClassName()][] = $listener;
         $this->allEventsListeners[] = $listener;
     }
 
@@ -118,19 +112,6 @@ class MethodListenerDiscovery
         });
 
         return $listeners;
-    }
-
-    public function getEventToListenerMap()
-    {
-        return $this->eventToListenerMap;
-    }
-
-    /**
-     * @return ListenerMethod[]
-     */
-    public function getAllEventsListeners(): array
-    {
-        return $this->allEventsListeners;
     }
 
     protected function filterFiles(array $files)

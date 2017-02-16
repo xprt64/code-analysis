@@ -6,7 +6,7 @@ namespace tests\Gica\CodeAnalysis\tests\Gica\CodeAnalysis;
 
 use Gica\CodeAnalysis\ClassDiscovery;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator;
-use tests\Gica\CodeAnalysis\tests\Gica\CodeAnalysis\Shared\AlphabeticalClassSorter;
+use Gica\CodeAnalysis\Shared\ClassSorter\AlphabeticalClassSorter;
 
 
 class ClassDiscoveryTest extends \PHPUnit_Framework_TestCase

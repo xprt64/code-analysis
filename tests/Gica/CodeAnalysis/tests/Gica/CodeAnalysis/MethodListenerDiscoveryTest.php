@@ -7,12 +7,13 @@ namespace tests\Gica\CodeAnalysis\tests\Gica\CodeAnalysis;
 use Gica\CodeAnalysis\MethodListenerDiscovery;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
+use Gica\CodeAnalysis\MethodListenerDiscovery\MapGrouper\GrouperByEvent;
 use Gica\CodeAnalysis\MethodListenerDiscovery\MessageClassDetector;
+use Gica\CodeAnalysis\Shared\ClassSorter\AlphabeticalClassSorter;
 use tests\Gica\CodeAnalysis\tests\Gica\CodeAnalysis\MethodListenerDiscoveryData\Message;
 use tests\Gica\CodeAnalysis\tests\Gica\CodeAnalysis\MethodListenerDiscoveryData\MyMessage;
 use tests\Gica\CodeAnalysis\tests\Gica\CodeAnalysis\MethodListenerDiscoveryData\SomeValidListener;
 use tests\Gica\CodeAnalysis\tests\Gica\CodeAnalysis\MethodListenerDiscoveryData\SomeValidListenerWithNoPsr4\MyMessage as MyMessageNoPsr4;
-use tests\Gica\CodeAnalysis\tests\Gica\CodeAnalysis\Shared\AlphabeticalClassSorter;
 
 
 class MethodListenerDiscoveryTest extends \PHPUnit_Framework_TestCase
@@ -26,14 +27,11 @@ class MethodListenerDiscoveryTest extends \PHPUnit_Framework_TestCase
             new AlphabeticalClassSorter()
         );
 
-        $sut->discoverListeners(__DIR__ . '/MethodListenerDiscoveryData');
-
-
-        $map = $sut->getEventToListenerMap();
+        $map = $sut->discoverListeners(__DIR__ . '/MethodListenerDiscoveryData');
 
         $this->assertCount(2, $map);
 
-        $this->assertCount(2, $sut->getAllEventsListeners());
+        $map = (new GrouperByEvent)->groupMap($map);
 
         $this->assertArrayHasKey(MyMessage::class, $map);
 

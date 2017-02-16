@@ -6,8 +6,8 @@
 namespace Gica\CodeAnalysis;
 
 
-use Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator;
+use Gica\CodeAnalysis\Shared\ClassSorter;
 use Gica\CodeAnalysis\Traits\FilesInDirectoryExtracter;
 
 class ClassDiscovery
@@ -19,7 +19,7 @@ class ClassDiscovery
     /** @var ListenerClassValidator */
     private $classValidator;
     /**
-     * @var ClassSorter
+     * @var \Gica\CodeAnalysis\Shared\ClassSorter
      */
     private $classSorter;
     /**

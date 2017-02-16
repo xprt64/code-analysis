@@ -4,8 +4,8 @@
 namespace Gica\CodeAnalysis\MethodListenerDiscovery\MapGrouper;
 
 
-use Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter\ByConstructorDependencySorter;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
+use Gica\CodeAnalysis\Shared\ClassSorter\ByConstructorDependencySorter;
 
 class GrouperByEvent
 {

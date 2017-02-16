@@ -3,10 +3,10 @@
  * Copyright (c) 2016 Constantin Galbenu <gica.galbenu@gmail.com>             *
  ******************************************************************************/
 
-namespace Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter;
+namespace Gica\CodeAnalysis\Shared\ClassSorter;
 
 
-use Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter;
+use Gica\CodeAnalysis\Shared\ClassSorter;
 
 class ByConstructorDependencySorter implements ClassSorter
 {

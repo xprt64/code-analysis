@@ -4,7 +4,7 @@
 namespace tests\Gica\CodeAnalysis\tests\Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter\ByConstructorDependencySorterTest;
 
 
-use Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter\ByConstructorDependencySorter;
+use Gica\CodeAnalysis\Shared\ClassSorter\ByConstructorDependencySorter;
 
 
 class ByConstructorDependencySorterTest extends \PHPUnit_Framework_TestCase
