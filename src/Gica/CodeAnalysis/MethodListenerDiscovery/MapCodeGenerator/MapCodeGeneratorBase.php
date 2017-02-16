@@ -32,7 +32,7 @@ abstract class MapCodeGeneratorBase implements MapCodeGenerator
         $eventEntries = [];
 
         foreach ($map as $key => $listeners) {
-            $eventItem = $this->generateLineItem($key, $listeners);
+            $eventItem = $this->generateLevel0Item($key, $listeners);
 
             $eventEntries[] = $eventItem;
         }
@@ -40,17 +40,23 @@ abstract class MapCodeGeneratorBase implements MapCodeGenerator
         return implode("\n\n", $eventEntries);
     }
 
-    protected function generateLineItem($eventClass, array $listeners)
+    protected function generateLevel0Item($eventClass, array $listeners)
     {
         return $this->spaces(self::SPACES_AT_MESSAGES) . $this->prependSlash($eventClass) . "::class => [\n" .
-            implode("\n", $this->addClassToLines($listeners)) . "\n" .
+            implode("\n", $this->generateLevel1Item($listeners)) . "\n" .
             $this->spaces(self::SPACES_AT_MESSAGES) . "],";
     }
-    /**
-     * @param ListenerMethod[] $listeners
-     * @return array
-     */
-    abstract protected function addClassToLines(array $listeners);
+
+    protected function generateLevel1Item(array $eventListenerMethods)
+    {
+        return array_map(function (ListenerMethod $listener) {
+            return $this->spaces(self::SPACES_AT_HANDLERS) .
+                '[' . $this->prependSlash($this->getLevel1FirstItem($listener)) . '::class' . ', \'' . $this->getLevel1SecondItem($listener) . '\'],';
+        }, $eventListenerMethods);
+    }
+
+    abstract protected function getLevel1FirstItem(ListenerMethod $listener):string;
+    abstract protected function getLevel1SecondItem(ListenerMethod $listener):string;
 
     protected function spaces($spacesCount)
     {
