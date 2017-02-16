@@ -6,6 +6,7 @@
 namespace Gica\CodeAnalysis\Shared\ClassSorter;
 
 
+use Gica\CodeAnalysis\Shared\ClassComparison\SubclassComparator;
 use Gica\CodeAnalysis\Shared\ClassSorter;
 
 class ByConstructorDependencySorter implements ClassSorter
@@ -28,13 +29,7 @@ class ByConstructorDependencySorter implements ClassSorter
     {
         $dependencies = $this->getClassDependencies($consumerClass);
 
-        if ($this->isParentClassOfAny($consumedClass, $dependencies)) {
-            //echo "{$consumerClass->name} depends on {$consumedClass->name}\n";
-            return true;
-        } else {
-            //echo "{$a->name} does not depend on {$b->name}\n";
-            return false;
-        }
+        return $this->isParentClassOfAny($consumedClass, $dependencies);
     }
 
     /**
@@ -54,11 +49,14 @@ class ByConstructorDependencySorter implements ClassSorter
 
     private function isParentClassOfAny(\ReflectionClass $parentClass, $classes)
     {
-        $isSubClassOf = function ($class) use ($parentClass) {
-            return $parentClass->name === $class || is_subclass_of($class, $parentClass->name, true);
+        $comparator = new SubclassComparator();
+
+        $isASubClassOrSameClass = function ($class) use ($parentClass, $comparator) {
+
+            return $comparator->isASubClassOrSameClass($class, $parentClass->getName());
         };
 
-        $filtered = array_filter($classes, $isSubClassOf);
+        $filtered = array_filter($classes, $isASubClassOrSameClass);
 
         return count($filtered) > 0;
 
