@@ -27,7 +27,7 @@ class GroupedByEventMapCodeGenerator implements MapCodeGenerator
     }
 
     /**
-     * @param ListenerMethod[] $map
+     * @param array $map
      * @return string
      */
     private function getMapAsString(array $map)
@@ -54,7 +54,7 @@ class GroupedByEventMapCodeGenerator implements MapCodeGenerator
     }
 
     /**
-     * @param \Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod[] $listeners
+     * @param ListenerMethod[] $listeners
      * @return array
      */
     private function addClassToListeners(array $listeners)

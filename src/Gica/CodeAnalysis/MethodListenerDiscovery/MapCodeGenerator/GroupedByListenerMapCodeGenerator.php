@@ -27,7 +27,7 @@ class GroupedByListenerMapCodeGenerator implements MapCodeGenerator
     }
 
     /**
-     * @param ListenerMethod[] $map
+     * @param array $map
      * @return string
      */
     private function getMapAsString(array $map)
