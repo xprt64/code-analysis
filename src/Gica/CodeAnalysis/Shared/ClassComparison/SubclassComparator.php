@@ -11,11 +11,7 @@ class SubclassComparator
         $parent = new \ReflectionClass($parentClass);
         $child = new \ReflectionClass($object);
 
-        if ($parent->isInterface()) {
-            return $child->implementsInterface($parentClass);
-        }
-
-        return $child->isSubclassOf($parentClass);
+        return $parent->isInterface() ? $child->implementsInterface($parentClass) : $child->isSubclassOf($parentClass);
     }
 
     public function isASubClassOrSameClass($object, string $parentClass)
