@@ -6,19 +6,26 @@ namespace Gica\CodeAnalysis\Shared\ClassComparison;
 
 class SubclassComparator
 {
-    public function isASubClass($object, string $parentClass)
+    private function isASubClass($object, string $parentClass)
     {
-        return is_subclass_of($object, $parentClass);
+        $parent = new \ReflectionClass($parentClass);
+        $child = new \ReflectionClass($object);
+
+        if ($parent->isInterface()) {
+            return $child->implementsInterface($parentClass);
+        }
+
+        return $child->isSubclassOf($parentClass);
     }
 
     public function isASubClassOrSameClass($object, string $parentClass)
     {
-        return $this->isASubClass($object, $parentClass) || $this->getObjectClass($object) === $parentClass;
+        return $this->getObjectClass($object) === $parentClass || $this->isASubClass($object, $parentClass);
     }
 
     public function isASubClassButNoSameClass($object, string $parentClass)
     {
-        return $this->isASubClass($object, $parentClass) && $this->getObjectClass($object) !== $parentClass;
+        return $this->getObjectClass($object) !== $parentClass && $this->isASubClass($object, $parentClass);
     }
 
     private function getObjectClass($object): string
