@@ -8,6 +8,7 @@ namespace Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator;
 
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
 use Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator;
+use Gica\CodeAnalysis\MethodListenerDiscovery\MapGrouper\GrouperByEvent;
 
 class GroupedByEventMapCodeGenerator implements MapCodeGenerator
 {
@@ -20,7 +21,7 @@ class GroupedByEventMapCodeGenerator implements MapCodeGenerator
      */
     public function generateAndGetFileContents(array $map, $template)
     {
-        $mapString = $this->getMapAsString($this->groupByEvent($map));
+        $mapString = $this->getMapAsString($this->groupMapByEvent($map));
 
         return str_replace('[/*do not modify this line!*/]', "[\n" . $mapString . "\n" . $this->spaces(self::SPACES_AT_ROOT) . ']', $template);
     }
@@ -74,15 +75,8 @@ class GroupedByEventMapCodeGenerator implements MapCodeGenerator
      * @param ListenerMethod[] $map
      * @return ListenerMethod[]
      */
-    private function groupByEvent(array $map)
+    public function groupMapByEvent(array $map)
     {
-        $result = [];
-
-        foreach ($map as $listenerMethod) {
-            $result[$listenerMethod->getEventClassName()][] = $listenerMethod;
-        }
-
-        return $result;
+        return (new GrouperByEvent())->groupMap($map);
     }
-
 }

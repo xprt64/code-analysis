@@ -73,6 +73,8 @@ class MethodListenerDiscovery
         foreach ($this->eventToListenerMap as $eventClass => $listeners) {
             $this->eventToListenerMap[$eventClass] = $this->sortListeners($listeners);
         }
+
+        return $this->allEventsListeners;
     }
 
     /**

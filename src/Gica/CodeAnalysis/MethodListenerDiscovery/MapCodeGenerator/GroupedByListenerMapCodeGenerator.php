@@ -8,6 +8,7 @@ namespace Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator;
 
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
 use Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator;
+use Gica\CodeAnalysis\MethodListenerDiscovery\MapGrouper\GrouperByListener;
 
 class GroupedByListenerMapCodeGenerator implements MapCodeGenerator
 {
@@ -76,13 +77,7 @@ class GroupedByListenerMapCodeGenerator implements MapCodeGenerator
      */
     private function groupByListener(array $map)
     {
-        $result = [];
-
-        foreach ($map as $listenerMethod) {
-            $result[$listenerMethod->getClassName()][] = $listenerMethod;
-        }
-
-        return $result;
+        return (new GrouperByListener())->groupMap($map);
     }
 
 }
