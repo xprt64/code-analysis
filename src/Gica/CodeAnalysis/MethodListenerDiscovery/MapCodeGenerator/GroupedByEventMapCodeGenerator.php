@@ -3,23 +3,24 @@
  * Copyright (c) 2016 Constantin Galbenu <gica.galbenu@gmail.com>             *
  ******************************************************************************/
 
-namespace Gica\CodeAnalysis\MethodListenerDiscovery;
+namespace Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator;
 
-/**
- * Class ReadModelMapperWriter
- * @package Gica\CodeAnalysis\MethodListenerDiscovery
- *
- * @deprecated use \Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator\GroupedByListenerMapCodeGenerator
- */
-class ReadModelMapperWriter implements MapCodeGenerator
+
+use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
+use Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator;
+
+class GroupedByEventMapCodeGenerator implements MapCodeGenerator
 {
     const SPACES_AT_ROOT = 8;
     const SPACES_AT_MESSAGES = 12;
     const SPACES_AT_HANDLERS = 16;
 
+    /**
+     * @inheritdoc
+     */
     public function generateAndGetFileContents(array $map, $template)
     {
-        $mapString = $this->getMapAsString($this->groupByListener($map));
+        $mapString = $this->getMapAsString($this->groupByEvent($map));
 
         return str_replace('[/*do not modify this line!*/]', "[\n" . $mapString . "\n" . $this->spaces(self::SPACES_AT_ROOT) . ']', $template);
     }
@@ -32,8 +33,8 @@ class ReadModelMapperWriter implements MapCodeGenerator
     {
         $eventEntries = [];
 
-        foreach ($map as $listenerClass => $listeners) {
-            $eventItem = $this->generateReadItem($listenerClass, $listeners);
+        foreach ($map as $eventClass => $listeners) {
+            $eventItem = $this->generateEventItem($eventClass, $listeners);
 
             $eventEntries[] = $eventItem;
         }
@@ -52,20 +53,20 @@ class ReadModelMapperWriter implements MapCodeGenerator
     }
 
     /**
-     * @param \Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod[] $eventListenerMethods
+     * @param \Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod[] $listeners
      * @return array
      */
-    private function addClassToEvents(array $eventListenerMethods)
+    private function addClassToListeners(array $listeners)
     {
         return array_map(function (ListenerMethod $listener) {
-            return $this->spaces(self::SPACES_AT_HANDLERS) . '[' . $this->prependSlash($listener->getEventClassName()) . '::class' . ', \'' . $listener->getMethodName() . '\'],';
-        }, $eventListenerMethods);
+            return $this->spaces(self::SPACES_AT_HANDLERS) . '[' . $this->prependSlash($listener->getClassName()) . '::class' . ', \'' . $listener->getMethodName() . '\'],';
+        }, $listeners);
     }
 
-    private function generateReadItem($listenerClass, array $listeners)
+    private function generateEventItem($eventClass, array $listeners)
     {
-        return $this->spaces(self::SPACES_AT_MESSAGES) . $this->prependSlash($listenerClass) . "::class => [\n" .
-            implode("\n", $this->addClassToEvents($listeners)) . "\n" .
+        return $this->spaces(self::SPACES_AT_MESSAGES) . $this->prependSlash($eventClass) . "::class => [\n" .
+            implode("\n", $this->addClassToListeners($listeners)) . "\n" .
             $this->spaces(self::SPACES_AT_MESSAGES) . "],";
     }
 
@@ -73,12 +74,12 @@ class ReadModelMapperWriter implements MapCodeGenerator
      * @param ListenerMethod[] $map
      * @return ListenerMethod[]
      */
-    private function groupByListener(array $map)
+    private function groupByEvent(array $map)
     {
         $result = [];
 
         foreach ($map as $listenerMethod) {
-            $result[$listenerMethod->getClassName()][] = $listenerMethod;
+            $result[$listenerMethod->getEventClassName()][] = $listenerMethod;
         }
 
         return $result;

@@ -5,7 +5,12 @@
 
 namespace Gica\CodeAnalysis\MethodListenerDiscovery;
 
-
+/**
+ * Class MethodListenerMapperWriter
+ * @package Gica\CodeAnalysis\MethodListenerDiscovery
+ *
+ * @deprecated use \Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator\GroupedByEventMapCodeGenerator
+ */
 class MethodListenerMapperWriter implements MapCodeGenerator
 {
     const SPACES_AT_ROOT = 8;

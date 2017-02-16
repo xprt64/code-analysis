@@ -3,20 +3,21 @@
  * Copyright (c) 2016 Constantin Galbenu <gica.galbenu@gmail.com>             *
  ******************************************************************************/
 
-namespace Gica\CodeAnalysis\MethodListenerDiscovery;
+namespace Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator;
 
-/**
- * Class ReadModelMapperWriter
- * @package Gica\CodeAnalysis\MethodListenerDiscovery
- *
- * @deprecated use \Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator\GroupedByListenerMapCodeGenerator
- */
-class ReadModelMapperWriter implements MapCodeGenerator
+
+use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
+use Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator;
+
+class GroupedByListenerMapCodeGenerator implements MapCodeGenerator
 {
     const SPACES_AT_ROOT = 8;
     const SPACES_AT_MESSAGES = 12;
     const SPACES_AT_HANDLERS = 16;
 
+    /**
+     * @inheritdoc
+     */
     public function generateAndGetFileContents(array $map, $template)
     {
         $mapString = $this->getMapAsString($this->groupByListener($map));

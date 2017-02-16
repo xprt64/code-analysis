@@ -14,7 +14,8 @@
     "xprt64/filesystem": "^1.0.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.0"
+    "phpunit/phpunit": "^5.4",
+    "phpunit/php-code-coverage": "^4"
   },
   "autoload": {
     "psr-4": {
@@ -26,5 +27,4 @@
       "tests\\Gica\\": "tests/Gica/"
     }
   }
-
 }
