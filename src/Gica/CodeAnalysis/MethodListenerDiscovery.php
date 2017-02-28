@@ -125,7 +125,7 @@ class MethodListenerDiscovery
      * @param $className
      * @return ListenerMethod[]
      */
-    private function findListenerMethodsInClass($className)
+    public function findListenerMethodsInClass($className)
     {
         $result = [];
 
