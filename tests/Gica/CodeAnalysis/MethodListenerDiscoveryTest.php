@@ -27,7 +27,7 @@ class MethodListenerDiscoveryTest extends \PHPUnit_Framework_TestCase
             new AlphabeticalClassSorter()
         );
 
-        $map = $sut->discoverListeners(__DIR__ . '/MethodListenerDiscoveryData');
+        $map = $sut->discoverListeners(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__ . '/MethodListenerDiscoveryData')));
 
         $this->assertCount(2, $map);
 
