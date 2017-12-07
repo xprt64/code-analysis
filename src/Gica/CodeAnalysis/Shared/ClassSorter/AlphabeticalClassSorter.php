@@ -8,6 +8,6 @@ class AlphabeticalClassSorter implements ClassSorter
 
     public function __invoke(\ReflectionClass $a, \ReflectionClass $b)
     {
-        return $a->name <=> $b->name;
+        return strcmp($a->name, $b->name) < 0;
     }
 }

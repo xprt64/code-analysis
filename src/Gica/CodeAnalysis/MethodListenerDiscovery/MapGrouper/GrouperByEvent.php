@@ -5,6 +5,7 @@ namespace Gica\CodeAnalysis\MethodListenerDiscovery\MapGrouper;
 
 
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
+use Gica\CodeAnalysis\Shared\BubbleArraySorter;
 use Gica\CodeAnalysis\Shared\ClassSorter\ByConstructorDependencySorter;
 
 class GrouperByEvent
@@ -37,13 +38,8 @@ class GrouperByEvent
      */
     private function sortListeners($listeners)
     {
-        $classSorter = new ByConstructorDependencySorter();
-
-        usort($listeners, function (ListenerMethod $a, ListenerMethod $b) use ($classSorter) {
-            return $classSorter->__invoke($a->getClass(), $b->getClass());
-        });
+        $listeners = (new BubbleArraySorter)->sort($listeners, new ByConstructorDependencySorter());
 
         return $listeners;
     }
-
 }

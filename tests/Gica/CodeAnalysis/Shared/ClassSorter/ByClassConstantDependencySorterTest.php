@@ -4,6 +4,7 @@
 namespace tests\Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter\ByClassConstantDependencySorterTest;
 
 
+use Gica\CodeAnalysis\Shared\BubbleArraySorter;
 use Gica\CodeAnalysis\Shared\ClassSorter\ByClassConstantDependencySorter;
 
 
@@ -20,7 +21,8 @@ class ByClassConstantDependencySorterTest extends \PHPUnit_Framework_TestCase
             new \ReflectionClass(Class2::class),
         ];
 
-        usort($classes, $sut);
+        /** @var \ReflectionClass[] $classes */
+        $classes = (new BubbleArraySorter())->sort($classes, $sut);
 
         $this->assertEquals(Class1::class, $classes[0]->getName());
         $this->assertEquals(Class2::class, $classes[1]->getName());

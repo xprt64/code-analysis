@@ -25,7 +25,7 @@ class ByClassConstantDependencySorter implements ClassSorter
 
     public function __invoke(\ReflectionClass $a, \ReflectionClass $b)
     {
-        return $this->getClassConstant($a) <=> $this->getClassConstant($b);
+        return $this->getClassConstant($a) < $this->getClassConstant($b);
     }
 
     private function getClassConstant(\ReflectionClass $aClass)

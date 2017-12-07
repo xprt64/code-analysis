@@ -65,9 +65,7 @@ class MethodListenerDiscovery
             }
         }
 
-        $this->allEventsListeners = $this->sortListeners($this->allEventsListeners);
-
-        return $this->allEventsListeners;
+         return $this->allEventsListeners;
     }
 
     /**
@@ -97,19 +95,6 @@ class MethodListenerDiscovery
     protected function addListenerToEvents(ListenerMethod $listener)
     {
         $this->allEventsListeners[] = $listener;
-    }
-
-    /**
-     * @param ListenerMethod[] $listeners
-     * @return ListenerMethod[]
-     */
-    private function sortListeners($listeners)
-    {
-        usort($listeners, function (ListenerMethod $a, ListenerMethod $b) {
-            return $this->classSorter->__invoke($a->getClass(), $b->getClass());
-        });
-
-        return $listeners;
     }
 
     protected function filterFiles(\Iterator $files)

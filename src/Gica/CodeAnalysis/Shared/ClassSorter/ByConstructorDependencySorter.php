@@ -11,21 +11,14 @@ use Gica\CodeAnalysis\Shared\ClassSorter;
 
 class ByConstructorDependencySorter implements ClassSorter
 {
+    private $cache = [];
 
-    public function __invoke(\ReflectionClass $a, \ReflectionClass $b)
+    public function __invoke(\ReflectionClass $before, \ReflectionClass $after)
     {
-        if ($this->doesClassDependsOnClass($a, $b)) {
-            return 1;
-        }
-
-        if ($this->doesClassDependsOnClass($b, $a)) {
-            return -1;
-        }
-
-        return strcmp($a->name, $b->name);
+        return $this->doesClassDependsOnClass($after, $before);
     }
 
-    private function doesClassDependsOnClass(\ReflectionClass $consumerClass, \ReflectionClass $consumedClass)
+    private function doesClassDependsOnClass(\ReflectionClass $consumerClass, \ReflectionClass $consumedClass): bool
     {
         $dependencies = $this->getClassDependencies($consumerClass);
 
@@ -34,24 +27,52 @@ class ByConstructorDependencySorter implements ClassSorter
 
     /**
      * @param \ReflectionClass $reflectionClass
+     * @param int $level
      * @return string[]
      */
-    private function getClassDependencies(\ReflectionClass $reflectionClass)
+    private function getClassDependencies(\ReflectionClass $reflectionClass, int $level = 0)
     {
-        $constructor = $reflectionClass->getConstructor();
-        if (!$constructor) {
-            return [];
+        if (!isset($this->cache[$reflectionClass->name])) {
+            $this->cache[$reflectionClass->name] = $this->_getClassDependencies($reflectionClass);
         }
 
-        return $this->classNameFromParameters($constructor->getParameters());
+        return $this->cache[$reflectionClass->name];
     }
 
+    /**
+     * @param \ReflectionClass $reflectionClass
+     * @param int $level
+     * @return string[]
+     */
+    private function _getClassDependencies(\ReflectionClass $reflectionClass, int $level = 0)
+    {
+        $dependencies = [];
 
-    private function isParentClassOfAny(\ReflectionClass $parentClass, $classes)
+        if ($level > 5) {
+            return $dependencies;
+        }
+
+        $constructor = $reflectionClass->getConstructor();
+        if ($constructor && $constructor->getParameters()) {
+            $dependencies = array_merge($dependencies, $this->classNameFromParameters($constructor->getParameters()));
+        }
+
+        if ($reflectionClass->getParentClass()) {
+            $dependencies = array_merge($dependencies, $this->getClassDependencies($reflectionClass->getParentClass()));
+        }
+
+        foreach ($dependencies as $dependency) {
+            $dependencies = array_merge($dependencies, $this->getClassDependencies($dependency, $level + 1));
+        }
+
+        return $dependencies;
+    }
+
+    private function isParentClassOfAny(\ReflectionClass $parentClass, $classes): bool
     {
         $comparator = new SubclassComparator();
 
-        $isASubClassOrSameClass = function ($class) use ($parentClass, $comparator) {
+        $isASubClassOrSameClass = function (\ReflectionClass $class) use ($parentClass, $comparator) {
             return $comparator->isASubClassOrSameClass($class, $parentClass->name);
         };
 
@@ -63,7 +84,7 @@ class ByConstructorDependencySorter implements ClassSorter
 
     private function classNameFromParameter(\ReflectionParameter $parameter)
     {
-        return $parameter->getClass()->name;
+        return $parameter->getClass();
     }
 
     /**
