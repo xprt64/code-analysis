@@ -38,8 +38,10 @@ class GrouperByEvent
      */
     private function sortListeners($listeners)
     {
-        $listeners = (new BubbleArraySorter)->sort($listeners, new ByConstructorDependencySorter());
+        $classSorter = new ByConstructorDependencySorter();
 
-        return $listeners;
+        return (new BubbleArraySorter)->sort($listeners, function (ListenerMethod $a, ListenerMethod $b) use ($classSorter) {
+            return $classSorter->__invoke($a->getClass(), $b->getClass());
+        });
     }
 }
