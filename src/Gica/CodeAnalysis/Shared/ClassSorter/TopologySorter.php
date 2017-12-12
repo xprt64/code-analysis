@@ -9,16 +9,30 @@ namespace Gica\CodeAnalysis\Shared\ClassSorter;
 use Gica\CodeAnalysis\Shared\ClassComparison\SubclassComparator;
 use Gica\CodeAnalysis\Shared\ClassSorter;
 
-class ByConstructorDependencySorter implements ClassSorter
+class TopologySorter implements ClassSorter
 {
     private $cache = [];
 
-    public function __invoke(\ReflectionClass $before, \ReflectionClass $after)
+    /**
+     * @param \ReflectionClass[] $classes
+     * @return \ReflectionClass[]
+     */
+    public function sortClasses($classes)
     {
-        return $this->doesClassDependsOnClass($after, $before);
+        $input = $this->createTSortInputString($classes);
+
+        exec("echo '" . $input . "'|tsort - ", $sortedClassNames);
+
+        $sortedClassNames = array_reverse($sortedClassNames);
+
+        usort($classes, function (\ReflectionClass $a, \ReflectionClass $b) use ($sortedClassNames) {
+            return array_search($a->name, $sortedClassNames) <=> array_search($b->name, $sortedClassNames);
+        });
+
+        return $classes;
     }
 
-    private function doesClassDependsOnClass(\ReflectionClass $consumerClass, \ReflectionClass $consumedClass): bool
+    public function doesClassDependsOnClass(\ReflectionClass $consumerClass, \ReflectionClass $consumedClass): bool
     {
         $dependencies = $this->getClassDependencies($consumerClass);
 
@@ -28,12 +42,12 @@ class ByConstructorDependencySorter implements ClassSorter
     /**
      * @param \ReflectionClass $reflectionClass
      * @param int $level
-     * @return string[]
+     * @return \ReflectionClass[]
      */
     private function getClassDependencies(\ReflectionClass $reflectionClass, int $level = 0)
     {
         if (!isset($this->cache[$reflectionClass->name])) {
-            $this->cache[$reflectionClass->name] = $this->_getClassDependencies($reflectionClass);
+            $this->cache[$reflectionClass->name] = $this->_getClassDependencies($reflectionClass, $level);
         }
 
         return $this->cache[$reflectionClass->name];
@@ -42,7 +56,7 @@ class ByConstructorDependencySorter implements ClassSorter
     /**
      * @param \ReflectionClass $reflectionClass
      * @param int $level
-     * @return string[]
+     * @return \ReflectionClass[]
      */
     private function _getClassDependencies(\ReflectionClass $reflectionClass, int $level = 0)
     {
@@ -54,7 +68,7 @@ class ByConstructorDependencySorter implements ClassSorter
 
         $constructor = $reflectionClass->getConstructor();
         if ($constructor && $constructor->getParameters()) {
-            $dependencies = array_merge($dependencies, $this->classNameFromParameters($constructor->getParameters()));
+            $dependencies = array_merge($dependencies, $this->classFromParameters($constructor->getParameters()));
         }
 
         if ($reflectionClass->getParentClass()) {
@@ -82,23 +96,46 @@ class ByConstructorDependencySorter implements ClassSorter
 
     }
 
-    private function classNameFromParameter(\ReflectionParameter $parameter)
+    /**
+     * @param \ReflectionParameter $parameter
+     * @return \ReflectionClass
+     */
+    private function classFromParameter(\ReflectionParameter $parameter)
     {
         return $parameter->getClass();
     }
 
     /**
      * @param \ReflectionParameter[] $parameters
-     * @return string[]
+     * @return \ReflectionClass[]
      */
-    private function classNameFromParameters(array $parameters)
+    private function classFromParameters(array $parameters)
     {
         $strings = array_map(function (\ReflectionParameter $parameter) {
-            return $this->classNameFromParameter($parameter);
+            return $this->classFromParameter($parameter);
         }, $parameters);
 
         return array_filter($strings, function ($s) {
             return !!$s;
         });
+    }
+
+    /**
+     * @param \ReflectionClass[] $classes
+     * @return string
+     */
+    private function createTSortInputString($classes): string
+    {
+        $inputLines = [];
+        foreach ($classes as $class) {
+            $deps = $this->getClassDependencies($class);
+            foreach ($deps as $dep) {
+                $inputLines[] = $class->name . ' ' . $dep->name;
+
+            }
+        }
+
+        $input = implode("\n", $inputLines);
+        return $input;
     }
 }

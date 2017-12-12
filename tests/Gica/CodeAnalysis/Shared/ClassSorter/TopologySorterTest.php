@@ -4,16 +4,15 @@
 namespace tests\Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter\ByConstructorDependencySorterTest;
 
 
-use Gica\CodeAnalysis\Shared\BubbleArraySorter;
-use Gica\CodeAnalysis\Shared\ClassSorter\ByConstructorDependencySorter;
+use Gica\CodeAnalysis\Shared\ClassSorter\TopologySorter;
 
 
-class ByConstructorDependencySorterTest extends \PHPUnit_Framework_TestCase
+class TopologySorterTest extends \PHPUnit_Framework_TestCase
 {
 
     public function test()
     {
-        $sut = new ByConstructorDependencySorter();
+        $sut = new TopologySorter();
 
         $classes = [
             new \ReflectionClass(Class1::class),
@@ -22,7 +21,7 @@ class ByConstructorDependencySorterTest extends \PHPUnit_Framework_TestCase
         ];
 
         /** @var \ReflectionClass[] $classes */
-        $classes = (new BubbleArraySorter())->sort($classes, $sut);
+        $classes = $sut->sortClasses($classes);
 
         $this->assertEquals(Class1::class, $classes[0]->getName());
         $this->assertEquals(Class2::class, $classes[1]->getName());

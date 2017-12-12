@@ -116,8 +116,6 @@ class ClassDiscovery
      */
     private function sort($discoveredClasses)
     {
-        usort($discoveredClasses, $this->classSorter);
-
-        return $discoveredClasses;
+        return $this->classSorter->sortClasses($discoveredClasses);
     }
 }

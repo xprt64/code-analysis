@@ -1,13 +1,21 @@
 <?php
+
 namespace Gica\CodeAnalysis\Shared\ClassSorter;
 
 use Gica\CodeAnalysis\Shared\ClassSorter;
 
 class AlphabeticalClassSorter implements ClassSorter
 {
-
-    public function __invoke(\ReflectionClass $a, \ReflectionClass $b)
+    /**
+     * @param \ReflectionClass[] $classes
+     * @return \ReflectionClass[]
+     */
+    public function sortClasses($classes)
     {
-        return strcmp($a->name, $b->name) < 0;
+        usort($classes, function (\ReflectionClass $a, \ReflectionClass $b) {
+            return $a->name <=> $b->name;
+        });
+
+        return $classes;
     }
 }
