@@ -16,12 +16,29 @@ class TopologySorter implements ClassSorter
     /**
      * @param \ReflectionClass[] $classes
      * @return \ReflectionClass[]
+     * @throws \Exception
      */
     public function sortClasses($classes)
     {
+        if (count($classes) <= 1) {
+            return $classes;
+        }
+
         $input = $this->createTSortInputString($classes);
 
-        exec("echo '" . $input . "'|tsort - ", $sortedClassNames);
+        $file = tempnam(sys_get_temp_dir(), 'tsort');
+
+        if (false === file_put_contents($file, $input)) {
+            throw new \Exception("file_put_contents $file error");
+        }
+
+        exec("tsort $file", $sortedClassNames, $returnVar);
+
+        unlink($file);
+
+        if ($returnVar != 0) {
+            throw new \Exception("tsort returned $returnVar for $input");
+        }
 
         $sortedClassNames = array_reverse($sortedClassNames);
 
