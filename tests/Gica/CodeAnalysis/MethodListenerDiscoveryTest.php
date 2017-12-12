@@ -9,7 +9,6 @@ use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
 use Gica\CodeAnalysis\MethodListenerDiscovery\MapGrouper\GrouperByEvent;
 use Gica\CodeAnalysis\MethodListenerDiscovery\MessageClassDetector;
-use Gica\CodeAnalysis\Shared\ClassSorter\AlphabeticalClassSorter;
 use tests\Gica\CodeAnalysis\MethodListenerDiscoveryData\Message;
 use tests\Gica\CodeAnalysis\MethodListenerDiscoveryData\MyMessage;
 use tests\Gica\CodeAnalysis\MethodListenerDiscoveryData\SomeValidListener;
@@ -23,8 +22,7 @@ class MethodListenerDiscoveryTest extends \PHPUnit_Framework_TestCase
     {
         $sut = new MethodListenerDiscovery(
             new MyMessageClassDetector(),
-            new MyClassValidatorForMethodListener(),
-            new AlphabeticalClassSorter()
+            new MyClassValidatorForMethodListener()
         );
 
         $map = $sut->discoverListeners(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__ . '/MethodListenerDiscoveryData')));

@@ -9,7 +9,6 @@ namespace Gica\CodeAnalysis;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
 use Gica\CodeAnalysis\MethodListenerDiscovery\MessageClassDetector;
-use Gica\CodeAnalysis\Shared\ClassSorter;
 use Gica\CodeAnalysis\Traits\FilesInDirectoryExtracter;
 
 class MethodListenerDiscovery
@@ -27,10 +26,6 @@ class MethodListenerDiscovery
     /** @var ListenerMethod[] */
     private $allEventsListeners = [];
     /**
-     * @var ClassSorter
-     */
-    private $classSorter;
-    /**
      * @var PhpClassInFileInspector
      */
     private $phpClassInFileInspector;
@@ -38,13 +33,11 @@ class MethodListenerDiscovery
     public function __construct(
         MessageClassDetector $messageClassDetector,
         ListenerClassValidator $classValidator,
-        ClassSorter $classSorter,
         PhpClassInFileInspector $phpClassInFileInspector = null
     )
     {
         $this->messageClassDetector = $messageClassDetector;
         $this->classValidator = $classValidator;
-        $this->classSorter = $classSorter;
         $this->phpClassInFileInspector = $phpClassInFileInspector ?? new PhpClassInFileInspector();
     }
 
@@ -65,7 +58,7 @@ class MethodListenerDiscovery
             }
         }
 
-         return $this->allEventsListeners;
+        return $this->allEventsListeners;
     }
 
     /**
