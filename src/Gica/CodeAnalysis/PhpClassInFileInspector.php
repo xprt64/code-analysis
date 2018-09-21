@@ -29,7 +29,7 @@ class PhpClassInFileInspector
     {
         $content = $this->readFile($fullFilePath);
 
-        if (!preg_match('#class\s+(?P<className>\S+)\s#ims', $content, $m)) {
+        if (!preg_match('#class\s+(?P<className>[a-z0-9_]+)\s#ims', $content, $m)) {
             return null;
         }
 
