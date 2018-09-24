@@ -28,6 +28,8 @@ class PhpClassInFileInspector
     public function getFullyQualifiedClassName(string $fullFilePath)
     {
         $content = $this->readFile($fullFilePath);
+        $content = preg_replace('!/\*.*?\*/!s', '', $content);
+        $content = preg_replace('/\n\s*\n/', "\n", $content);
 
         if (!preg_match('#class\s+(?P<className>[a-z0-9_]+)\s#ims', $content, $m)) {
             return null;
