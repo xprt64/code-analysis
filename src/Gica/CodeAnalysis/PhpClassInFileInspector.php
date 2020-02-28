@@ -1,25 +1,13 @@
 <?php
-
+/**
+ * Copyright (c) 2020 Constantin Galbenu <xprt64@gmail.com>
+ */
 
 namespace Gica\CodeAnalysis;
 
 
-use Gica\FileSystem\FileSystemInterface;
-use Gica\FileSystem\OperatingSystemFileSystem;
-
 class PhpClassInFileInspector
 {
-    /**
-     * @var FileSystemInterface
-     */
-    private $fileSystem;
-
-    public function __construct(
-        FileSystemInterface $fileSystem = null
-    )
-    {
-        $this->fileSystem = $fileSystem ?? new OperatingSystemFileSystem();
-    }
 
     /**
      * @param $fullFilePath
@@ -57,7 +45,7 @@ class PhpClassInFileInspector
 
     private function readFile($fullFilePath)
     {
-        return $this->fileSystem->fileGetContents($fullFilePath);
+        return file_get_contents($fullFilePath);
     }
 
     private function evaluateCode($content)
