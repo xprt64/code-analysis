@@ -119,7 +119,7 @@ class TopologySorter implements ClassSorter
      */
     private function classFromParameter(\ReflectionParameter $parameter)
     {
-        return $parameter->getClass();
+        return @$parameter->getClass();
     }
 
     /**
