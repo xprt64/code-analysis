@@ -8,6 +8,13 @@ namespace Gica\CodeAnalysis;
 
 class PhpClassInFileInspector
 {
+    public function isEnum(string $fullFilePath){
+        $content = $this->readFile($fullFilePath);
+        $content = preg_replace('!/\*.*?\*/!s', '', $content);
+        $content = preg_replace('/\n\s*\n/', "\n", $content);
+
+        return preg_match('#enum\s+(?P<className>[a-z0-9_]+)\:\s#ims', $content, $m);
+    }
 
     /**
      * @param $fullFilePath
@@ -19,8 +26,10 @@ class PhpClassInFileInspector
         $content = preg_replace('!/\*.*?\*/!s', '', $content);
         $content = preg_replace('/\n\s*\n/', "\n", $content);
 
-        if (!preg_match('#class\s+(?P<className>[a-z0-9_]+)\s#ims', $content, $m)) {
-            return null;
+        if (!preg_match('#enum\s+(?P<className>[a-z0-9_]+)\:\s#ims', $content, $m)) {
+            if (!preg_match('#class\s+(?P<className>[a-z0-9_]+)\s#ims', $content, $m)) {
+                return null;
+            }
         }
 
         $unqualifiedClassName = $m['className'];
