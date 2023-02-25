@@ -9,7 +9,7 @@ use tests\Gica\CodeAnalysis\PhpClassInFileInspectorData\GoodClass;
 use tests\Gica\radomNamespace\GoodClassButNoPsr4;
 
 
-class PhpClassInFileInspectorTest extends \PHPUnit_Framework_TestCase
+class PhpClassInFileInspectorTest extends \PHPUnit\Framework\TestCase
 {
 
     public function test()

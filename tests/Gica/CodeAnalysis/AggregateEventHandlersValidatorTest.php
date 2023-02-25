@@ -9,7 +9,7 @@ use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator;
 use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator\AnyPhpClassIsAccepted;
 
 
-class AggregateEventHandlersValidatorTest extends \PHPUnit_Framework_TestCase
+class AggregateEventHandlersValidatorTest extends \PHPUnit\Framework\TestCase
 {
 
     public function test()
@@ -19,6 +19,7 @@ class AggregateEventHandlersValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $sut->validateEventHandlers(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__ . '/AggregateEventHandlersValidator/Valid')));
+        $this->expectNotToPerformAssertions();
     }
 
     public function testWithOtherNonAcceptedFiles()
@@ -28,6 +29,7 @@ class AggregateEventHandlersValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $sut->validateEventHandlers(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__ . '/AggregateEventHandlersValidator/WithOtherFiles')));
+        $this->expectNotToPerformAssertions();
     }
 
     public function testWithInvalidAggregate()
@@ -37,7 +39,7 @@ class AggregateEventHandlersValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageRegExp('#Method\'s name is invalid#ims');
+        $this->expectExceptionMessageMatches('#Method\'s name is invalid#ims');
 
         $sut->validateEventHandlers(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__ . '/AggregateEventHandlersValidator/Invalid')));
     }
@@ -49,7 +51,7 @@ class AggregateEventHandlersValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageRegExp('#Method parameter is not type hinted#ims');
+        $this->expectExceptionMessageMatches('#Method parameter must be type hinted with a class#ims');
 
         $sut->validateEventHandlers(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__ . '/AggregateEventHandlersValidator/InvalidWithNoTypeHinted')));
     }

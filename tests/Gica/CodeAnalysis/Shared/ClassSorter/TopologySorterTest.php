@@ -7,7 +7,7 @@ namespace tests\Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter\ByConstruc
 use Gica\CodeAnalysis\Shared\ClassSorter\TopologySorter;
 
 
-class TopologySorterTest extends \PHPUnit_Framework_TestCase
+class TopologySorterTest extends \PHPUnit\Framework\TestCase
 {
 
     public function test()

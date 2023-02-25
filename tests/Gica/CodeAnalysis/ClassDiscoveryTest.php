@@ -9,7 +9,7 @@ use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator;
 use Gica\CodeAnalysis\Shared\ClassSorter\AlphabeticalClassSorter;
 
 
-class ClassDiscoveryTest extends \PHPUnit_Framework_TestCase
+class ClassDiscoveryTest extends \PHPUnit\Framework\TestCase
 {
 
     public function test()

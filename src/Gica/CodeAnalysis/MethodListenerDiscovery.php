@@ -117,9 +117,7 @@ class MethodListenerDiscovery
                 continue;
             }
 
-            $eventClass = $this->getMessageClassFromMethod($reflectionMethod);
-
-            if ($eventClass) {
+            foreach ($this->getMessageClassesFromMethod($reflectionMethod) as $eventClass) {
                 $result[] = new ListenerMethod($reflectionClass, $reflectionMethod->name, $eventClass);
             }
         }
@@ -144,6 +142,44 @@ class MethodListenerDiscovery
         }
 
         return false;
+    }
+
+    private function getMessageClassesFromMethod(\ReflectionMethod $reflectionMethod): array
+    {
+        if (!$this->isMethodAcccepted($reflectionMethod)) {
+            return [];
+        }
+
+        foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
+            $type = $reflectionParameter->getType();
+            if ($type instanceof \ReflectionNamedType) {
+                $reflectionClass = $this->getClassFromType($type);
+                return $reflectionClass ? [$reflectionClass] : [];
+            }
+            elseif ($type instanceof \ReflectionUnionType) {
+                return array_filter(
+                    array_map(fn(\ReflectionNamedType $singleType) => $this->getClassFromType($singleType), $type->getTypes()),
+                    fn($x) => $x
+                );
+            }
+        }
+
+        return [];
+    }
+
+    private function getClassFromType(\ReflectionNamedType $type): ?string
+    {
+        if (class_exists($type->getName())) {
+            try {
+                $typeHintedClass = new \ReflectionClass($type->getName());
+            } catch (\ReflectionException $e) {
+                return null;
+            }
+            if ($this->isOurMessageClass($typeHintedClass)) {
+                return $typeHintedClass->name;
+            }
+        }
+        return null;
     }
 
     private function isValidListenerMethod(\ReflectionMethod $reflectionMethod)

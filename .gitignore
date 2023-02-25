@@ -3,3 +3,4 @@ composer.lock
 .idea/
 tmp/
 build/
+tests/.phpunit.result.cache

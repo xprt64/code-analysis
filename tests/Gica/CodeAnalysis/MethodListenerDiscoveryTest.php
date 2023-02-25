@@ -15,7 +15,7 @@ use tests\Gica\CodeAnalysis\MethodListenerDiscoveryData\SomeValidListener;
 use tests\Gica\CodeAnalysis\MethodListenerDiscoveryData\SomeValidListenerWithNoPsr4\MyMessage as MyMessageNoPsr4;
 
 
-class MethodListenerDiscoveryTest extends \PHPUnit_Framework_TestCase
+class MethodListenerDiscoveryTest extends \PHPUnit\Framework\TestCase
 {
 
     public function test()

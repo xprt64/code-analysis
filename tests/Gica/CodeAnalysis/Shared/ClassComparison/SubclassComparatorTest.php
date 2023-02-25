@@ -7,7 +7,7 @@ namespace tests\Gica\CodeAnalysis\Shared\ClassComparison;
 use Gica\CodeAnalysis\Shared\ClassComparison\SubclassComparator;
 
 
-class SubclassComparatorTest extends \PHPUnit_Framework_TestCase
+class SubclassComparatorTest extends \PHPUnit\Framework\TestCase
 {
     public function test_isASubClassOrSameClass()
     {

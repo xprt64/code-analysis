@@ -102,17 +102,26 @@ class AggregateEventHandlersValidator
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     private function getMessageClassFromMethod(\ReflectionMethod $reflectionMethod)
     {
         $reflectionParameter = $reflectionMethod->getParameters()[0];
 
-        $typeHintedClass = $reflectionParameter->getClass();
+        $reflectionNamedType = $reflectionParameter->getType();
+        if($reflectionNamedType instanceof \ReflectionNamedType) {
 
-        if ($typeHintedClass) {
-            return $typeHintedClass->name;
+            $className = $reflectionNamedType->getName();
+            if(!class_exists($className)){
+                throw new \Exception("$className is not a class");
+            }
+            return $className;
+        }
+        else {
+            throw new \Exception("Method parameter must be type hinted with a class");
         }
 
-        throw new \Exception("Method parameter is not type hinted");
     }
 
     private function isValidListenerMethod(\ReflectionMethod $reflectionMethod)

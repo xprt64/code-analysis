@@ -14,7 +14,7 @@ require_once __DIR__ . '/FqnResolverTest/SomeClassWithPartialAlias.php';
 require_once __DIR__ . '/FqnResolverTest/Subdir/SomeOtherClass.php';
 require_once __DIR__ . '/FqnResolverTest/Subdir/Subdir2/SomeClassInSubdir2.php';
 
-class FqnResolverTest extends \PHPUnit_Framework_TestCase
+class FqnResolverTest extends \PHPUnit\Framework\TestCase
 {
 
     public function test()

@@ -7,7 +7,7 @@ namespace tests\Gica\CodeAnalysis\MethodListenerDiscovery\ClassSorter\ByClassCon
 use Gica\CodeAnalysis\Shared\ClassSorter\ByClassConstantDependencySorter;
 
 
-class ByClassConstantDependencySorterTest extends \PHPUnit_Framework_TestCase
+class ByClassConstantDependencySorterTest extends \PHPUnit\Framework\TestCase
 {
 
     public function test()

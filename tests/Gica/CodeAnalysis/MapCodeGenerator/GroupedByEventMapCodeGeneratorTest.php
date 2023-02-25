@@ -8,7 +8,7 @@ use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
 use Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator\GroupedByEventMapCodeGenerator;
 
 
-class GroupedByEventMapCodeGeneratorTest extends \PHPUnit_Framework_TestCase
+class GroupedByEventMapCodeGeneratorTest extends \PHPUnit\Framework\TestCase
 {
     public function test()
     {

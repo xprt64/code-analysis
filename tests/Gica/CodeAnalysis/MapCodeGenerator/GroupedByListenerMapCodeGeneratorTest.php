@@ -8,7 +8,7 @@ use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerMethod;
 use Gica\CodeAnalysis\MethodListenerDiscovery\MapCodeGenerator\GroupedByListenerMapCodeGenerator;
 
 
-class GroupedByListenerMapCodeGeneratorTest extends \PHPUnit_Framework_TestCase
+class GroupedByListenerMapCodeGeneratorTest extends \PHPUnit\Framework\TestCase
 {
 
     public function test()
