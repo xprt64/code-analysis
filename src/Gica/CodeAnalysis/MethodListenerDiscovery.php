@@ -33,7 +33,7 @@ class MethodListenerDiscovery
     public function __construct(
         MessageClassDetector $messageClassDetector,
         ListenerClassValidator $classValidator,
-        PhpClassInFileInspector $phpClassInFileInspector = null
+        ?PhpClassInFileInspector $phpClassInFileInspector = null
     )
     {
         $this->messageClassDetector = $messageClassDetector;

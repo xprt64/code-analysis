@@ -30,7 +30,7 @@ class ClassDiscovery
     public function __construct(
         ListenerClassValidator $classValidator,
         ClassSorter $classSorter,
-        PhpClassInFileInspector $phpClassInFileInspector = null
+        ?PhpClassInFileInspector $phpClassInFileInspector = null
     )
     {
         $this->classValidator = $classValidator;

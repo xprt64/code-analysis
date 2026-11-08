@@ -22,7 +22,7 @@ class AggregateEventHandlersValidator
 
     public function __construct(
         ListenerClassValidator $classValidator,
-        PhpClassInFileInspector $phpClassInFileInspector = null
+        ?PhpClassInFileInspector $phpClassInFileInspector = null
     )
     {
         $this->classValidator = $classValidator;
