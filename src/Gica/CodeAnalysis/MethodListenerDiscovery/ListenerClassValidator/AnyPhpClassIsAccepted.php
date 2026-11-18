@@ -10,6 +10,7 @@ use Gica\CodeAnalysis\MethodListenerDiscovery\ListenerClassValidator;
 
 class AnyPhpClassIsAccepted implements ListenerClassValidator
 {
+    #[\Override]
     public function isClassAccepted(\ReflectionClass $typeHintedClass):bool
     {
         return true;

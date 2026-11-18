@@ -11,16 +11,19 @@ use Gica\CodeAnalysis\MethodListenerDiscovery\MapGrouper\GrouperByListener;
 
 class GroupedByListenerMapCodeGenerator extends MapCodeGeneratorBase
 {
+    #[\Override]
     protected function getLevel1FirstItem(ListenerMethod $listener): string
     {
         return $listener->getEventClassName();
     }
 
+    #[\Override]
     protected function getLevel1SecondItem(ListenerMethod $listener): string
     {
         return $listener->getMethodName();
     }
 
+    #[\Override]
     protected function group(array $map)
     {
         return new GrouperByListener()->groupMap($map);

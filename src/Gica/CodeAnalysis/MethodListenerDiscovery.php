@@ -167,7 +167,7 @@ class MethodListenerDiscovery
         return null;
     }
 
-    private function isValidListenerMethod(\ReflectionMethod $reflectionMethod)
+    private function isValidListenerMethod(\ReflectionMethod $reflectionMethod): bool
     {
         if ($reflectionMethod->getNumberOfParameters() == 0)
             return false;

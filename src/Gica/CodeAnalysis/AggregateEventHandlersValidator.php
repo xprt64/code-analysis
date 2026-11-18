@@ -64,7 +64,7 @@ class AggregateEventHandlersValidator
      * @param $className
      * @throws \Exception
      */
-    private function validateEventHandlersInClass($className)
+    private function validateEventHandlersInClass($className): void
     {
         $reflectionClass = new \ReflectionClass($className);
 

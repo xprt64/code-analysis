@@ -18,6 +18,7 @@ class TopologySorter implements ClassSorter
      * @return \ReflectionClass[]
      * @throws \Exception
      */
+    #[\Override]
     public function sortClasses($classes)
     {
         if (count($classes) <= 1) {
@@ -122,7 +123,7 @@ class TopologySorter implements ClassSorter
      * @param \ReflectionParameter[] $parameters
      * @return \ReflectionClass[]
      */
-    private function classFromParameters(array $parameters)
+    private function classFromParameters(array $parameters): array
     {
         $strings = array_map($this->classFromParameter(...), $parameters);
 

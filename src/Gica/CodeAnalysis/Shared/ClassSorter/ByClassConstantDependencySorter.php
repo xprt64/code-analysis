@@ -24,6 +24,7 @@ class ByClassConstantDependencySorter implements ClassSorter
      * @param \ReflectionClass[] $classes
      * @return \ReflectionClass[]
      */
+    #[\Override]
     public function sortClasses($classes)
     {
         usort($classes, fn(\ReflectionClass $a, \ReflectionClass $b) => $this->getClassConstant($a) <=> $this->getClassConstant($b));

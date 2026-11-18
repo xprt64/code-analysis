@@ -55,7 +55,7 @@ class FqnResolver
         return $parts[count($parts) - 1];
     }
 
-    private function getWithoutFirstComponent($name)
+    private function getWithoutFirstComponent($name): string
     {
         $parts = explode('\\', $name);
 

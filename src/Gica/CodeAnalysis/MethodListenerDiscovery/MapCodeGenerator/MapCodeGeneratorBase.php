@@ -16,6 +16,7 @@ abstract class MapCodeGeneratorBase implements MapCodeGenerator
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function generateAndGetFileContents(array $map, $template)
     {
         $mapString = $this->getMapAsString($this->group($map));
@@ -27,7 +28,7 @@ abstract class MapCodeGeneratorBase implements MapCodeGenerator
      * @param array $map
      * @return string
      */
-    private function getMapAsString(array $map)
+    private function getMapAsString(array $map): string
     {
         $eventEntries = [];
 

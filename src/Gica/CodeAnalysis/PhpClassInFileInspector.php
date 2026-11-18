@@ -52,12 +52,12 @@ class PhpClassInFileInspector
         return $fqn;
     }
 
-    private function readFile($fullFilePath)
+    private function readFile($fullFilePath): string|false
     {
         return file_get_contents($fullFilePath);
     }
 
-    private function evaluateCode($content)
+    private function evaluateCode($content): void
     {
         $content = str_replace('<?php', '', $content);
         eval($content);
