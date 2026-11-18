@@ -34,9 +34,7 @@ class ByClassConstantDependencySorter implements ClassSorter
      */
     public function sortClasses($classes)
     {
-        usort($classes, function (\ReflectionClass $a, \ReflectionClass $b) {
-            return $this->getClassConstant($a) <=> $this->getClassConstant($b);
-        });
+        usort($classes, fn(\ReflectionClass $a, \ReflectionClass $b) => $this->getClassConstant($a) <=> $this->getClassConstant($b));
 
         return $classes;
     }

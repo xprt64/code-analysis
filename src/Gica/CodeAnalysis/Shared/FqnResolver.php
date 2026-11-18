@@ -16,7 +16,7 @@ class FqnResolver
 
             foreach ($m['uses'] as $fullUse) {
 
-                list($use, $alias) = $this->parseUse($fullUse);
+                [$use, $alias] = $this->parseUse($fullUse);
 
                 if ($alias == $firstComponent) {
                     $withoutFirstComponent = $this->getWithoutFirstComponent($shortName);
@@ -36,7 +36,7 @@ class FqnResolver
     private function parseUse($fullUse)
     {
         if (false !== stripos($fullUse, ' as ')) {
-            list($use, $alias) = explode(' as ', $fullUse);
+            [$use, $alias] = explode(' as ', $fullUse);
 
             $use = trim($use, " ");
             $alias = trim($alias, " ");

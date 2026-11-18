@@ -25,17 +25,11 @@ class ListenersSorter
      */
     public function sortListeners($listeners)
     {
-        $sortedClasses = $this->classSorter->sortClasses(array_map(function (ListenerMethod $listenerMethod) {
-            return $listenerMethod->getClass();
-        }, $listeners));
+        $sortedClasses = $this->classSorter->sortClasses(array_map(fn(ListenerMethod $listenerMethod) => $listenerMethod->getClass(), $listeners));
 
-        $sortedClassesNames = array_map(function (\ReflectionClass $class) {
-            return $class->name;
-        }, $sortedClasses);
+        $sortedClassesNames = array_map(fn(\ReflectionClass $class) => $class->name, $sortedClasses);
 
-        usort($listeners, function (ListenerMethod $a, ListenerMethod $b) use ($sortedClassesNames) {
-            return array_search($a->getClassName(), $sortedClassesNames) <=> array_search($b->getClassName(), $sortedClassesNames);
-        });
+        usort($listeners, fn(ListenerMethod $a, ListenerMethod $b) => array_search($a->getClassName(), $sortedClassesNames) <=> array_search($b->getClassName(), $sortedClassesNames));
 
         return $listeners;
     }

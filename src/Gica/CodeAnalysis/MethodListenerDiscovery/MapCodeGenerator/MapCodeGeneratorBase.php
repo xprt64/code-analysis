@@ -49,10 +49,8 @@ abstract class MapCodeGeneratorBase implements MapCodeGenerator
 
     protected function generateLevel1Item(array $eventListenerMethods)
     {
-        return array_map(function (ListenerMethod $listener) {
-            return $this->spaces(self::SPACES_AT_HANDLERS) .
-                '[' . $this->prependSlash($this->getLevel1FirstItem($listener)) . '::class' . ', \'' . $this->getLevel1SecondItem($listener) . '\'],';
-        }, $eventListenerMethods);
+        return array_map(fn(ListenerMethod $listener) => $this->spaces(self::SPACES_AT_HANDLERS) .
+            '[' . $this->prependSlash($this->getLevel1FirstItem($listener)) . '::class' . ', \'' . $this->getLevel1SecondItem($listener) . '\'],', $eventListenerMethods);
     }
 
     abstract protected function getLevel1FirstItem(ListenerMethod $listener):string;

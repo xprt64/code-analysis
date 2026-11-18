@@ -28,6 +28,6 @@ class SubclassComparator
     {
         return is_string($object)
             ? $object
-            : ($object instanceof \ReflectionClass ? $object->getName() : get_class($object));
+            : ($object instanceof \ReflectionClass ? $object->getName() : $object::class);
     }
 }

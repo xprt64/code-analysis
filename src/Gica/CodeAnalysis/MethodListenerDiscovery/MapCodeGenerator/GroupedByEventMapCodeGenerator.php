@@ -23,6 +23,6 @@ class GroupedByEventMapCodeGenerator extends MapCodeGeneratorBase
 
     protected function group(array $map)
     {
-        return (new GrouperByEvent())->groupMap($map);
+        return new GrouperByEvent()->groupMap($map);
     }
 }

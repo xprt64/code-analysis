@@ -38,6 +38,6 @@ class GrouperByEvent
      */
     public function sortListeners($listeners)
     {
-        return (new ListenersSorter(new TopologySorter))->sortListeners($listeners);
+        return new ListenersSorter(new TopologySorter)->sortListeners($listeners);
     }
 }

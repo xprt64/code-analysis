@@ -23,7 +23,7 @@ class GroupedByListenerMapCodeGenerator extends MapCodeGeneratorBase
 
     protected function group(array $map)
     {
-        return (new GrouperByListener())->groupMap($map);
+        return new GrouperByListener()->groupMap($map);
     }
 
 }

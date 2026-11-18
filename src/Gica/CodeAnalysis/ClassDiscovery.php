@@ -90,9 +90,7 @@ class ClassDiscovery
 
     protected function filterFiles(\Iterator $files)
     {
-        return new \CallbackFilterIterator($files, function ($file) {
-            return $this->isListenerFileName($file);
-        });
+        return new \CallbackFilterIterator($files, fn($file) => $this->isListenerFileName($file));
     }
 
     /**

@@ -12,9 +12,7 @@ class AlphabeticalClassSorter implements ClassSorter
      */
     public function sortClasses($classes)
     {
-        usort($classes, function (\ReflectionClass $a, \ReflectionClass $b) {
-            return $a->name <=> $b->name;
-        });
+        usort($classes, fn(\ReflectionClass $a, \ReflectionClass $b) => $a->name <=> $b->name);
 
         return $classes;
     }

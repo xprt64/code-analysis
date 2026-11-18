@@ -42,9 +42,7 @@ class TopologySorter implements ClassSorter
 
         $sortedClassNames = array_reverse($sortedClassNames);
 
-        usort($classes, function (\ReflectionClass $a, \ReflectionClass $b) use ($sortedClassNames) {
-            return array_search($a->name, $sortedClassNames) <=> array_search($b->name, $sortedClassNames);
-        });
+        usort($classes, fn(\ReflectionClass $a, \ReflectionClass $b) => array_search($a->name, $sortedClassNames) <=> array_search($b->name, $sortedClassNames));
 
         return $classes;
     }
@@ -103,9 +101,7 @@ class TopologySorter implements ClassSorter
     {
         $comparator = new SubclassComparator();
 
-        $isASubClassOrSameClass = function (\ReflectionClass $class) use ($parentClass, $comparator) {
-            return $comparator->isASubClassOrSameClass($class, $parentClass->name);
-        };
+        $isASubClassOrSameClass = (fn(\ReflectionClass $class) => $comparator->isASubClassOrSameClass($class, $parentClass->name));
 
         $filtered = array_filter($classes, $isASubClassOrSameClass);
 
@@ -128,13 +124,9 @@ class TopologySorter implements ClassSorter
      */
     private function classFromParameters(array $parameters)
     {
-        $strings = array_map(function (\ReflectionParameter $parameter) {
-            return $this->classFromParameter($parameter);
-        }, $parameters);
+        $strings = array_map($this->classFromParameter(...), $parameters);
 
-        return array_filter($strings, function ($s) {
-            return !!$s;
-        });
+        return array_filter($strings, fn($s) => !!$s);
     }
 
     /**

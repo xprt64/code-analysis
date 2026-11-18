@@ -92,9 +92,7 @@ class MethodListenerDiscovery
 
     protected function filterFiles(\Iterator $files)
     {
-        return new \CallbackFilterIterator($files, function ($file) {
-            return $this->isListenerFileName($file);
-        });
+        return new \CallbackFilterIterator($files, fn($file) => $this->isListenerFileName($file));
     }
 
     /**
@@ -158,7 +156,7 @@ class MethodListenerDiscovery
             }
             elseif ($type instanceof \ReflectionUnionType) {
                 return array_filter(
-                    array_map(fn(\ReflectionNamedType $singleType) => $this->getClassFromType($singleType), $type->getTypes()),
+                    array_map($this->getClassFromType(...), $type->getTypes()),
                     fn($x) => $x
                 );
             }
