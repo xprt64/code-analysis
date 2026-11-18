@@ -12,20 +12,13 @@ use Gica\CodeAnalysis\Traits\FilesInDirectoryExtracter;
 class AggregateEventHandlersValidator
 {
     use FilesInDirectoryExtracter;
-
-    /** @var ListenerClassValidator */
-    private $classValidator;
-    /**
-     * @var PhpClassInFileInspector
-     */
-    private $phpClassInFileInspector;
+    private \Gica\CodeAnalysis\PhpClassInFileInspector $phpClassInFileInspector;
 
     public function __construct(
-        ListenerClassValidator $classValidator,
+        private ListenerClassValidator $classValidator,
         ?PhpClassInFileInspector $phpClassInFileInspector = null
     )
     {
-        $this->classValidator = $classValidator;
         $this->phpClassInFileInspector = $phpClassInFileInspector ?? new PhpClassInFileInspector;
     }
 

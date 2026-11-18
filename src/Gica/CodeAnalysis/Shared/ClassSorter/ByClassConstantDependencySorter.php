@@ -11,16 +11,8 @@ use Gica\CodeAnalysis\Shared\ClassSorter;
 class ByClassConstantDependencySorter implements ClassSorter
 {
 
-    /**
-     * @var string
-     */
-    private $constantName;
-
-    public function __construct(
-        string $constantName
-    )
+    public function __construct(private string $constantName)
     {
-        $this->constantName = $constantName;
     }
 
     private function getClassConstant(\ReflectionClass $aClass)

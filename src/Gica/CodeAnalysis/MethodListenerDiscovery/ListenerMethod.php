@@ -9,22 +9,15 @@ namespace Gica\CodeAnalysis\MethodListenerDiscovery;
 class ListenerMethod
 {
 
-    private $className;
-    private $methodName;
-    private $eventClassName;
-    /**
-     * @var \ReflectionClass
-     */
-    private $class;
+    private string $className;
+    private \ReflectionClass $class;
 
     public function __construct(
         \ReflectionClass
-        $class, $methodName, $eventClassName
+        $class, private $methodName, private $eventClassName
     )
     {
         $this->className = $class->name;
-        $this->methodName = $methodName;
-        $this->eventClassName = $eventClassName;
         $this->class = $class;
     }
 

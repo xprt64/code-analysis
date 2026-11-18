@@ -15,26 +15,14 @@ class ClassDiscovery
     use FilesInDirectoryExtracter;
 
     protected $discoveredClasses = [];
-
-    /** @var ListenerClassValidator */
-    private $classValidator;
-    /**
-     * @var \Gica\CodeAnalysis\Shared\ClassSorter
-     */
-    private $classSorter;
-    /**
-     * @var PhpClassInFileInspector
-     */
-    private $phpClassInFileInspector;
+    private \Gica\CodeAnalysis\PhpClassInFileInspector $phpClassInFileInspector;
 
     public function __construct(
-        ListenerClassValidator $classValidator,
-        ClassSorter $classSorter,
+        private ListenerClassValidator $classValidator,
+        private ClassSorter $classSorter,
         ?PhpClassInFileInspector $phpClassInFileInspector = null
     )
     {
-        $this->classValidator = $classValidator;
-        $this->classSorter = $classSorter;
         $this->phpClassInFileInspector = $phpClassInFileInspector ?? new PhpClassInFileInspector;
     }
 

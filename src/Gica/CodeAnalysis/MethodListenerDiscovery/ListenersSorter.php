@@ -9,14 +9,8 @@ use Gica\CodeAnalysis\Shared\ClassSorter;
 class ListenersSorter
 {
 
-    /**
-     * @var ClassSorter
-     */
-    private $classSorter;
-
-    public function __construct(ClassSorter $classSorter)
+    public function __construct(private ClassSorter $classSorter)
     {
-        $this->classSorter = $classSorter;
     }
 
     /**

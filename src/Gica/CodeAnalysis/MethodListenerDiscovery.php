@@ -15,29 +15,16 @@ class MethodListenerDiscovery
 {
     use FilesInDirectoryExtracter;
 
-    /**
-     * @var MessageClassDetector
-     */
-    private $messageClassDetector;
-
-    /** @var ListenerClassValidator */
-    private $classValidator;
-
     /** @var ListenerMethod[] */
     private $allEventsListeners = [];
-    /**
-     * @var PhpClassInFileInspector
-     */
-    private $phpClassInFileInspector;
+    private \Gica\CodeAnalysis\PhpClassInFileInspector $phpClassInFileInspector;
 
     public function __construct(
-        MessageClassDetector $messageClassDetector,
-        ListenerClassValidator $classValidator,
+        private MessageClassDetector $messageClassDetector,
+        private ListenerClassValidator $classValidator,
         ?PhpClassInFileInspector $phpClassInFileInspector = null
     )
     {
-        $this->messageClassDetector = $messageClassDetector;
-        $this->classValidator = $classValidator;
         $this->phpClassInFileInspector = $phpClassInFileInspector ?? new PhpClassInFileInspector();
     }
 
